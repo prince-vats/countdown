@@ -22,24 +22,21 @@ body {
   max-width: 400px;
 }
 
-/* Neon glow effect */
 h1 {
-  color: #00ffe0;
-  text-shadow: 0 0 10px #00ffe0, 0 0 20px #00ffe0;
+  color: #00bcd4; /* cyan */
+  margin-bottom: 10px;
 }
 
 #timer {
   font-size: 2.8rem;
   margin: 15px 0;
-  color: #ff4dff;
-  text-shadow: 0 0 10px #ff4dff, 0 0 20px #ff4dff;
+  color: #ff4081; /* pink */
 }
 
 #quote {
-  margin-top: 15px;
+  margin-top: 10px;
   font-style: italic;
-  color: #ffd700;
-  text-shadow: 0 0 8px #ffd700;
+  color: #ffc107; /* amber */
 }
 
 /* Button */
@@ -48,15 +45,14 @@ button {
   padding: 10px 15px;
   border: none;
   border-radius: 5px;
-  background: #00ffe0;
+  background: #4caf50; /* green */
   color: #000;
   cursor: pointer;
   font-weight: bold;
-  box-shadow: 0 0 10px #00ffe0;
 }
 
 button:hover {
-  background: #00ccaa;
+  background: #43a047;
 }
 </style>
 </head>
@@ -90,7 +86,7 @@ function updateTimer() {
   const diff = targetDate - now;
 
   if (diff <= 0) {
-    document.body.innerHTML = "<h1 style='color:#00ffcc'>🎉 Go crush NEET!</h1>";
+    document.body.innerHTML = "<h1>Go crush NEET.</h1>";
     return;
   }
 
