@@ -8,68 +8,51 @@
 <style>
 body {
   margin: 0;
+  background: #000;
   font-family: Arial, sans-serif;
   color: #fff;
-  text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-
-  background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #1c1c1c);
-  background-size: 400% 400%;
-  animation: gradient 10s ease infinite;
-}
-
-@keyframes gradient {
-  0% {background-position: 0% 50%;}
-  50% {background-position: 100% 50%;}
-  100% {background-position: 0% 50%;}
+  text-align: center;
 }
 
 .container {
   max-width: 400px;
 }
 
+/* Neon glow effect */
 h1 {
-  margin-bottom: 10px;
+  color: #00ffe0;
+  text-shadow: 0 0 10px #00ffe0, 0 0 20px #00ffe0;
 }
 
 #timer {
-  font-size: 2.5rem;
-  margin: 10px 0;
+  font-size: 2.8rem;
+  margin: 15px 0;
+  color: #ff4dff;
+  text-shadow: 0 0 10px #ff4dff, 0 0 20px #ff4dff;
 }
 
 #quote {
+  margin-top: 15px;
   font-style: italic;
-  margin: 15px 0;
-  opacity: 0.8;
+  color: #ffd700;
+  text-shadow: 0 0 8px #ffd700;
 }
 
-.progress-bar {
-  width: 100%;
-  height: 10px;
-  background: rgba(255,255,255,0.2);
-  border-radius: 10px;
-  overflow: hidden;
-  margin: 15px 0;
-}
-
-.progress {
-  height: 100%;
-  background: #00ffcc;
-  width: 0%;
-  transition: width 1s linear;
-}
-
+/* Button */
 button {
+  margin-top: 20px;
   padding: 10px 15px;
   border: none;
-  background: #00ffcc;
-  color: #000;
   border-radius: 5px;
+  background: #00ffe0;
+  color: #000;
   cursor: pointer;
-  margin-top: 10px;
+  font-weight: bold;
+  box-shadow: 0 0 10px #00ffe0;
 }
 
 button:hover {
@@ -81,16 +64,11 @@ button:hover {
 <body>
 
 <div class="container">
-  <h1>⏳ NEET 2026 Countdown</h1>
+  <h1>⏳ NEET 2026</h1>
   <div id="timer">Loading...</div>
-
-  <div class="progress-bar">
-    <div class="progress" id="progress"></div>
-  </div>
-
   <div id="quote"></div>
 
-  <button onclick="toggleSound()">🎵 Toggle Focus Sound</button>
+  <button onclick="toggleSound()">🎵 Focus Sound</button>
   <audio id="bgSound" loop>
     <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
   </audio>
@@ -98,14 +76,13 @@ button:hover {
 
 <script>
 const targetDate = new Date("2026-05-03T14:00:00").getTime();
-const startDate = new Date("2025-01-01").getTime();
 
 const quotes = [
-  "Push yourself, because no one else will do it for you.",
-  "Dream it. Wish it. Do it.",
-  "Small progress is still progress.",
-  "Consistency beats motivation.",
-  "Your future self will thank you."
+  "Stay focused. Stay sharp.",
+  "Every second counts now.",
+  "Discipline creates freedom.",
+  "You didn’t come this far to stop.",
+  "Make it happen."
 ];
 
 function updateTimer() {
@@ -113,7 +90,7 @@ function updateTimer() {
   const diff = targetDate - now;
 
   if (diff <= 0) {
-    document.body.innerHTML = "<h1>🎉 You made it! All the best for NEET!</h1>";
+    document.body.innerHTML = "<h1 style='color:#00ffcc'>🎉 Go crush NEET!</h1>";
     return;
   }
 
@@ -124,20 +101,13 @@ function updateTimer() {
 
   document.getElementById("timer").innerHTML =
     `${days}d ${hours}h ${minutes}m ${seconds}s`;
-
-  const total = targetDate - startDate;
-  const passed = now - startDate;
-  const percent = (passed / total) * 100;
-  document.getElementById("progress").style.width = percent + "%";
 }
 
-// motivational quote
 function updateQuote() {
   const random = Math.floor(Math.random() * quotes.length);
   document.getElementById("quote").innerText = quotes[random];
 }
 
-// sound toggle
 function toggleSound() {
   const audio = document.getElementById("bgSound");
   if (audio.paused) audio.play();
@@ -145,7 +115,7 @@ function toggleSound() {
 }
 
 setInterval(updateTimer, 1000);
-setInterval(updateQuote, 5000);
+setInterval(updateQuote, 4000);
 
 updateTimer();
 updateQuote();
