@@ -90,9 +90,6 @@ button:hover {
 
   <div id="quote"></div>
 
-  <button onclick="markStudy()">📚 Mark Today Done</button>
-  <p id="streak"></p>
-
   <button onclick="toggleSound()">🎵 Toggle Focus Sound</button>
   <audio id="bgSound" loop>
     <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
@@ -128,7 +125,6 @@ function updateTimer() {
   document.getElementById("timer").innerHTML =
     `${days}d ${hours}h ${minutes}m ${seconds}s`;
 
-  // progress calculation
   const total = targetDate - startDate;
   const passed = now - startDate;
   const percent = (passed / total) * 100;
@@ -140,18 +136,6 @@ function updateQuote() {
   const random = Math.floor(Math.random() * quotes.length);
   document.getElementById("quote").innerText = quotes[random];
 }
-
-// study streak
-function markStudy() {
-  let streak = localStorage.getItem("streak") || 0;
-  streak++;
-  localStorage.setItem("streak", streak);
-  document.getElementById("streak").innerText = "🔥 Streak: " + streak + " days";
-}
-
-// load streak
-document.getElementById("streak").innerText =
-  "🔥 Streak: " + (localStorage.getItem("streak") || 0) + " days";
 
 // sound toggle
 function toggleSound() {
