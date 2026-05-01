@@ -9,7 +9,7 @@
 body {
   margin: 0;
   background: #000;
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', sans-serif;
   color: #fff;
   display: flex;
   justify-content: center;
@@ -20,37 +20,47 @@ body {
 
 .container {
   max-width: 400px;
+  width: 90%;
+}
+
+.card {
+  background: rgba(255,255,255,0.05);
+  padding: 25px;
+  border-radius: 15px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 0 25px rgba(0,188,212,0.2);
 }
 
 h1 {
-  color: #00bcd4; /* cyan */
+  color: #00e5ff;
   margin-bottom: 10px;
 }
 
 #timer {
   font-size: 2.8rem;
   margin: 15px 0;
-  color: #ff4081; /* pink */
+  color: #ff4081;
 }
 
 #quote {
   margin-top: 10px;
   font-style: italic;
-  color: #ffc107; /* amber */
+  color: #ffc107;
 }
 
 /* Button */
 button {
   margin-top: 20px;
-  padding: 10px 15px;
+  padding: 12px;
+  width: 100%;
   border: none;
-  border-radius: 5px;
-  background: #4caf50; /* green */
+  border-radius: 8px;
+  background: #4caf50;
   color: #000;
   cursor: pointer;
   font-weight: bold;
+  font-size: 1rem;
 }
-
 button:hover {
   background: #43a047;
 }
@@ -60,14 +70,19 @@ button:hover {
 <body>
 
 <div class="container">
-  <h1>⏳ NEET 2026</h1>
-  <div id="timer">Loading...</div>
-  <div id="quote"></div>
+  <div class="card">
+    <h1>⏳ NEET 2026</h1>
+    <div id="timer">Loading...</div>
+    <div id="quote"></div>
 
-  <button onclick="toggleSound()">🎵 Focus Sound</button>
-  <audio id="bgSound" loop>
-    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-  </audio>
+    <button onclick="toggleSound()" id="soundBtn">
+      🎵 Start Focus Sound
+    </button>
+
+    <audio id="bgSound" loop>
+      <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+    </audio>
+  </div>
 </div>
 
 <script>
@@ -81,8 +96,9 @@ const quotes = [
   "Make it happen."
 ];
 
+// TIMER
 function updateTimer() {
-  const now = new Date().getTime();
+  const now = Date.now();
   const diff = targetDate - now;
 
   if (diff <= 0) {
@@ -90,26 +106,41 @@ function updateTimer() {
     return;
   }
 
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-  const minutes = Math.floor((diff / (1000 * 60)) % 60);
-  const seconds = Math.floor((diff / 1000) % 60);
+  const d = Math.floor(diff / (1000*60*60*24));
+  const h = Math.floor((diff / (1000*60*60)) % 24);
+  const m = Math.floor((diff / (1000*60)) % 60);
+  const s = Math.floor((diff / 1000) % 60);
 
   document.getElementById("timer").innerHTML =
-    `${days}d ${hours}h ${minutes}m ${seconds}s`;
+    `${d}d ${h}h ${m}m ${s}s`;
 }
 
+// QUOTES
 function updateQuote() {
   const random = Math.floor(Math.random() * quotes.length);
   document.getElementById("quote").innerText = quotes[random];
 }
 
-function toggleSound() {
+// SOUND (FIXED)
+async function toggleSound() {
   const audio = document.getElementById("bgSound");
-  if (audio.paused) audio.play();
-  else audio.pause();
+  const btn = document.getElementById("soundBtn");
+
+  try {
+    if (audio.paused) {
+      audio.currentTime = 0;
+      await audio.play();
+      btn.innerText = "⏸ Stop Sound";
+    } else {
+      audio.pause();
+      btn.innerText = "🎵 Start Focus Sound";
+    }
+  } catch (err) {
+    alert("Click again to enable sound (browser restriction).");
+  }
 }
 
+// INIT
 setInterval(updateTimer, 1000);
 setInterval(updateQuote, 4000);
 
