@@ -1,76 +1,171 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Countdown</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      margin: 0;
-      background: #000;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      text-align: center;
-    }
+<meta charset="UTF-8">
+<title>NEET 2026 Countdown</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    .container {
-      padding: 20px;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: #fff;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 20px;
-    }
+  background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364, #1c1c1c);
+  background-size: 400% 400%;
+  animation: gradient 10s ease infinite;
+}
 
-    #timer {
-      font-size: 2.5rem;
-      letter-spacing: 2px;
-    }
+@keyframes gradient {
+  0% {background-position: 0% 50%;}
+  50% {background-position: 100% 50%;}
+  100% {background-position: 0% 50%;}
+}
 
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 1.5rem;
-      }
-      #timer {
-        font-size: 2rem;
-      }
-    }
-  </style>
+.container {
+  max-width: 400px;
+}
+
+h1 {
+  margin-bottom: 10px;
+}
+
+#timer {
+  font-size: 2.5rem;
+  margin: 10px 0;
+}
+
+#quote {
+  font-style: italic;
+  margin: 15px 0;
+  opacity: 0.8;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 10px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 15px 0;
+}
+
+.progress {
+  height: 100%;
+  background: #00ffcc;
+  width: 0%;
+  transition: width 1s linear;
+}
+
+button {
+  padding: 10px 15px;
+  border: none;
+  background: #00ffcc;
+  color: #000;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+button:hover {
+  background: #00ccaa;
+}
+</style>
 </head>
+
 <body>
-  <div class="container">
-    <h1>Time remaining for NEET-2026</h1>
-    <div id="timer">Loading...</div>
+
+<div class="container">
+  <h1>⏳ NEET 2026 Countdown</h1>
+  <div id="timer">Loading...</div>
+
+  <div class="progress-bar">
+    <div class="progress" id="progress"></div>
   </div>
 
-  <script>
-    // 🔧 SET YOUR TARGET DATE HERE
-    const targetDate = new Date("2026-05-03T14:00:00").getTime();
+  <div id="quote"></div>
 
-    function updateTimer() {
-      const now = new Date().getTime();
-      const diff = targetDate - now;
+  <button onclick="markStudy()">📚 Mark Today Done</button>
+  <p id="streak"></p>
 
-      if (diff <= 0) {
-        document.getElementById("timer").innerHTML = "Time's up!";
-        return;
-      }
+  <button onclick="toggleSound()">🎵 Toggle Focus Sound</button>
+  <audio id="bgSound" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+  </audio>
+</div>
 
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const minutes = Math.floor((diff / (1000 * 60)) % 60);
-      const seconds = Math.floor((diff / 1000) % 60);
+<script>
+const targetDate = new Date("2026-05-03T14:00:00").getTime();
+const startDate = new Date("2025-01-01").getTime();
 
-      document.getElementById("timer").innerHTML =
-        `${days}d ${hours}h ${minutes}m ${seconds}s`;
-    }
+const quotes = [
+  "Push yourself, because no one else will do it for you.",
+  "Dream it. Wish it. Do it.",
+  "Small progress is still progress.",
+  "Consistency beats motivation.",
+  "Your future self will thank you."
+];
 
-    setInterval(updateTimer, 1000);
-    updateTimer();
-  </script>
+function updateTimer() {
+  const now = new Date().getTime();
+  const diff = targetDate - now;
+
+  if (diff <= 0) {
+    document.body.innerHTML = "<h1>🎉 You made it! All the best for NEET!</h1>";
+    return;
+  }
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+  const minutes = Math.floor((diff / (1000 * 60)) % 60);
+  const seconds = Math.floor((diff / 1000) % 60);
+
+  document.getElementById("timer").innerHTML =
+    `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+  // progress calculation
+  const total = targetDate - startDate;
+  const passed = now - startDate;
+  const percent = (passed / total) * 100;
+  document.getElementById("progress").style.width = percent + "%";
+}
+
+// motivational quote
+function updateQuote() {
+  const random = Math.floor(Math.random() * quotes.length);
+  document.getElementById("quote").innerText = quotes[random];
+}
+
+// study streak
+function markStudy() {
+  let streak = localStorage.getItem("streak") || 0;
+  streak++;
+  localStorage.setItem("streak", streak);
+  document.getElementById("streak").innerText = "🔥 Streak: " + streak + " days";
+}
+
+// load streak
+document.getElementById("streak").innerText =
+  "🔥 Streak: " + (localStorage.getItem("streak") || 0) + " days";
+
+// sound toggle
+function toggleSound() {
+  const audio = document.getElementById("bgSound");
+  if (audio.paused) audio.play();
+  else audio.pause();
+}
+
+setInterval(updateTimer, 1000);
+setInterval(updateQuote, 5000);
+
+updateTimer();
+updateQuote();
+</script>
+
 </body>
 </html>
